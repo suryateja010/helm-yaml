@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: maven-sample
-          image: muralikrishnavaitla/maven-sample-project:20
+          image: muralikrishnavaitla/maven-sample-project:latest
           ports:
             - containerPort: 8080
           env:

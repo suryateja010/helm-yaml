@@ -1,30 +1,35 @@
-apiVersion: v1
-kind: Service
-metadata:
-  name: nginx-project
-spec:
-  type: ClusterIP
-  ports:
-    - port: 80
-  selector:
-    app: nginx-project
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: nginx-project
+  name: maven-sample
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: nginx-project
+      app: maven-sample
   template:
     metadata:
       labels:
-        app: nginx-project
+        app: maven-sample
     spec:
       containers:
-        - name: nginx
-          image: 864981728406.dkr.ecr.ap-south-1.amazonaws.com/testing/my-flask-app:latest
+        - name: maven-sample
+          image: muralikrishnavaitla/maven-sample-project:latest
           ports:
-            - containerPort: 80 #this is sample
+            - containerPort: 8080
+          env:
+            - name: JAVA_OPTS
+              value: "-Xmx512m"
+---------
+apiVersion: v1
+kind: Service
+metadata:
+  name: maven-sample
+spec:
+  selector:
+    app: maven-sample
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+  type: ClusterIP
